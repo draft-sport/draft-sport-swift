@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Points: Decodable {
+public struct Points: Decodable {
     
     let averagePoints: UInt16
     let totalPoints: UInt16
@@ -16,7 +16,22 @@ struct Points: Decodable {
     let pointsPerMinutePlayed: Float
     let rounds: Array<Round>?
     
-    init (from decoder: Decoder) throws {
+    public init(
+        averagePoints: UInt16,
+        totalPoints: UInt16,
+        pointsLastRound: UInt16,
+        pointsPerMinutePlayed: Float,
+        rounds: Array<Round>?
+    ) {
+        self.averagePoints = averagePoints
+        self.totalPoints = totalPoints
+        self.pointsLastRound = pointsLastRound
+        self.pointsPerMinutePlayed = pointsPerMinutePlayed
+        self.rounds = rounds
+        return
+    }
+    
+    public init (from decoder: Decoder) throws {
         let data = try decoder.container(keyedBy: Keys.self)
         self.averagePoints = try data.decode(
             UInt16.self, forKey: .averagePoints

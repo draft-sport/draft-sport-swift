@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Profile: Decodable {
+public struct Profile: Decodable {
     
     let firstName: String
     let lastName: String
@@ -16,7 +16,25 @@ struct Profile: Decodable {
     let publicId: String
     let teamName: String
     
-    init(from decoder: Decoder) throws {
+    public init(
+        firstName: String,
+        lastName: String,
+        positionName: String,
+        publicId: String,
+        teamName: String
+    ) {
+        
+        self.firstName = firstName
+        self.lastName = lastName
+        self.positionName = positionName
+        self.publicId = publicId
+        self.teamName = teamName
+        
+        return
+        
+    }
+    
+    public init(from decoder: Decoder) throws {
         let data = try decoder.container(keyedBy: Keys.self)
         self.publicId = try data.decode(String.self, forKey: .publicId)
         self.lastName = try data.decode(String.self, forKey: .lastName)

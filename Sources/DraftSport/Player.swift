@@ -22,6 +22,29 @@ public final class Player: Decodable, ApiDecodable {
     let points: Points
     let queryTime: UInt16
     
+    public init(
+        profile: Profile,
+        limit: UInt16,
+        offset: UInt16,
+        queryCount: UInt32,
+        sequence: UInt32,
+        requestingAgentId: String?,
+        points: Points,
+        queryTime: UInt16
+    ) {
+        
+        self.profile = profile
+        self.limit = limit
+        self.offset = offset
+        self.queryCount = queryCount
+        self.sequence = sequence
+        self.requestingAgentId = requestingAgentId
+        self.points = points
+        self.queryTime = queryTime
+
+        return
+    }
+    
     required public init(from decoder: Decoder) throws {
         let data = try decoder.container(keyedBy: Keys.self)
         self.profile = try data.decode(Profile.self, forKey: .profile)
