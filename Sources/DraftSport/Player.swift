@@ -8,7 +8,9 @@
 import Foundation
 
 
-public final class Player: Decodable, ApiDecodable {
+public final class Player: Decodable, ApiDecodable, Identifiable {
+    
+    public typealias ID = String
     
     private static let path = "/fantasy/player"
     private static let listPath = "/fantasy/player/list"
@@ -22,6 +24,8 @@ public final class Player: Decodable, ApiDecodable {
     public let points: Points
     public let queryTime: UInt16
     
+    public var id: String { return self.profile.publicId }
+
     public init(
         profile: Profile,
         limit: UInt16,
