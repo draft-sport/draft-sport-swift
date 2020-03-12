@@ -10,13 +10,15 @@ import Foundation
 
 public struct Profile: Decodable {
     
-    let firstName: String
-    let lastName: String
-    let positionName: String
-    let publicId: String
-    let teamName: String
+    public let firstName: String
+    public let lastName: String
+    public let positionName: String
+    public let publicId: String
+    public let teamName: String
     
-    var displayName: String { return self.firstName + " " + self.lastName }
+    public var displayName: String {
+        return self.firstName + " " + self.lastName
+    }
 
     public init(
         firstName: String,

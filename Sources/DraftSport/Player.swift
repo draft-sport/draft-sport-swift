@@ -13,14 +13,14 @@ public final class Player: Decodable, ApiDecodable {
     private static let path = "/fantasy/player"
     private static let listPath = "/fantasy/player/list"
     
-    let profile: Profile
-    let limit: UInt16
-    let offset: UInt16
-    let queryCount: UInt32
-    let sequence: UInt32
-    let requestingAgentId: String?
-    let points: Points
-    let queryTime: UInt16
+    public let profile: Profile
+    public let limit: UInt16
+    public let offset: UInt16
+    public let queryCount: UInt32
+    public let sequence: UInt32
+    public let requestingAgentId: String?
+    public let points: Points
+    public let queryTime: UInt16
     
     public init(
         profile: Profile,

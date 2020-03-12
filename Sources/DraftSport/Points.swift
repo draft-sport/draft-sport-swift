@@ -10,11 +10,11 @@ import Foundation
 
 public struct Points: Decodable {
     
-    let averagePoints: UInt16
-    let totalPoints: UInt16
-    let pointsLastRound: UInt16
-    let pointsPerMinutePlayed: Float
-    let rounds: Array<Round>?
+    public let averagePoints: UInt16
+    public let totalPoints: UInt16
+    public let pointsLastRound: UInt16
+    public let pointsPerMinutePlayed: Float
+    public let rounds: Array<Round>?
     
     public init(
         averagePoints: UInt16,
