@@ -16,6 +16,8 @@ public struct Profile: Decodable {
     let publicId: String
     let teamName: String
     
+    var displayName: String { return self.firstName + " " + self.lastName }
+
     public init(
         firstName: String,
         lastName: String,
