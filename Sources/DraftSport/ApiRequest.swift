@@ -9,7 +9,7 @@ import Foundation
 
 
 internal class ApiRequest {
-    
+
     private static let agent = "Draft Sport Swift 0.0.1"
     private static let endPoint = "https://draftrugby.com/api"
     private static let idHeader = "X-Draft-Sport-Session-ID"
@@ -60,15 +60,18 @@ internal class ApiRequest {
             )
         }
         
-        Self.apiSession.dataTask(with: request) { (data, response, error) in
-            Self.processResponse(
-                data: data,
-                response: response,
-                error: error,
-                callback: callback
-            )
-        }
-        
+        Self.apiSession.dataTask(
+            with: request,
+            completionHandler: { (data, response, error) in
+                Self.processResponse(
+                    data: data,
+                    response: response,
+                    error: error,
+                    callback: callback
+                )
+            }
+        ).resume()
+
         return
         
     }

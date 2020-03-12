@@ -13,8 +13,29 @@ struct Points: Decodable {
     let averagePoints: UInt16
     let totalPoints: UInt16
     let pointsLastRound: UInt16
-    let pointsPerMinutePlayed: UInt16
-    let rounds: Array<Round>
+    let pointsPerMinutePlayed: Float
+    let rounds: Array<Round>?
+    
+    init (from decoder: Decoder) throws {
+        let data = try decoder.container(keyedBy: Keys.self)
+        self.averagePoints = try data.decode(
+            UInt16.self, forKey: .averagePoints
+        )
+        self.totalPoints = try data.decode(UInt16.self, forKey: .totalPoints)
+        self.pointsLastRound = try data.decode(
+            UInt16.self,
+            forKey: .pointsLastRound
+        )
+        self.pointsPerMinutePlayed = try data.decode(
+            Float.self,
+            forKey: .pointsPerMinutePlayed
+        )
+        self.rounds = try data.decodeIfPresent(
+            Array<Round>.self,
+            forKey: .rounds
+        )
+        return
+    }
     
     private enum Keys: String, CodingKey {
         case averagePoints = "average_points"

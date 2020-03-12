@@ -15,6 +15,15 @@ struct Profile: Decodable {
     let positionName: String
     let publicId: String
     let teamName: String
+    
+    init(from decoder: Decoder) throws {
+        let data = try decoder.container(keyedBy: Keys.self)
+        self.publicId = try data.decode(String.self, forKey: .publicId)
+        self.lastName = try data.decode(String.self, forKey: .lastName)
+        self.firstName = try data.decode(String.self, forKey: .firstName)
+        self.positionName = try data.decode(String.self, forKey: .positionName)
+        self.teamName = try data.decode(String.self, forKey: .teamName)
+    }
 
     private enum Keys: String, CodingKey {
         case publicId = "public_id"

@@ -8,7 +8,7 @@
 import Foundation
 
 
-public final class Player: Decodable, ApiObject {
+public final class Player: Decodable, ApiDecodable {
     
     private static let path = "/fantasy/player"
     private static let listPath = "/fantasy/player/list"
@@ -18,7 +18,7 @@ public final class Player: Decodable, ApiObject {
     let offset: UInt16
     let queryCount: UInt32
     let sequence: UInt32
-    let requestingAgentId: String
+    let requestingAgentId: String?
     let points: Points
     let queryTime: UInt16
     
@@ -29,12 +29,17 @@ public final class Player: Decodable, ApiObject {
         self.offset = try data.decode(UInt16.self, forKey: .offset)
         self.queryCount = try data.decode(UInt32.self, forKey: .queryCount)
         self.sequence = try data.decode(UInt32.self, forKey: .sequence)
-        self.requestingAgentId = try data.decode(
+        self.requestingAgentId = try data.decodeIfPresent(
             String.self,
             forKey: .requestingAgentId
         )
         self.points = try data.decode(Points.self, forKey: .points)
-        self.queryTime = try data.decode(UInt16.self, forKey: .queryTime)
+        guard let intermediateQueryTime = UInt16(
+            try data.decode(String.self, forKey: .queryTime)
+        ) else {
+            throw DraftSportError(.jsonParseFailed)
+        }
+        self.queryTime = intermediateQueryTime
         return
     }
     
@@ -62,6 +67,39 @@ public final class Player: Decodable, ApiObject {
         
     }
     
+    public static func retrieveMany(
+        season: Season,
+        session: Session? = nil,
+        offset: Int = 0,
+        limit: Int = 20,
+        orderBy: OrderBy = .totalSeasonPoints,
+        order: Order = .descending,
+        nameFragment: String? = nil,
+        callback: @escaping (Error?, Array<Player>?) -> Void
+    ) {
+        
+        let parameters = UrlParameters([
+            UrlParameter(season.publicId, withKey: "season"),
+            UrlParameter(offset, withKey: "offset"),
+            UrlParameter(limit, withKey: "limit"),
+            UrlParameter(orderBy.rawValue, withKey: "order_by"),
+            UrlParameter(order.rawValue, withKey: "order")
+        ])
+        
+        ApiRequest.make(
+            path: Self.listPath,
+            method: .GET,
+            session: session,
+            parameters: parameters,
+            body: nil
+        ) { (error, data) in
+            Self.decodeMany(error: error, data: data, callback: callback)
+        }
+        
+        return
+        
+    }
+    
     private enum Keys: String, CodingKey {
         case profile = "player"
         case limit = "limit"
@@ -73,4 +111,11 @@ public final class Player: Decodable, ApiObject {
         case queryTime = "query_time"
     }
     
+    public enum OrderBy: String {
+        case playerName = "player_name"
+        case averagePoints = "average_points"
+        case pointsLastRound = "points_last_round"
+        case totalSeasonPoints = "total_season_points"
+    }
+
 }

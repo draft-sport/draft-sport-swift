@@ -12,7 +12,7 @@ internal struct UrlParameters: CustomStringConvertible {
     
     let parameters: Array<UrlParameter>
 
-    var description: String { return "Placebo" }
+    var description: String { return self.parameterString }
     
     var parameterString: String {
         if (self.parameters.count < 1) { return "" }
