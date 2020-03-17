@@ -10,8 +10,12 @@ import Foundation
 
 public struct Season {
     
-    static let SUPER_RUGBY_2020 = Season(publicId: "2020")
+    public static let SUPER_RUGBY_2020 = Season(publicId: "2020")
     
     let publicId: String
+    
+    public init(publicId: String) {
+        self.publicId = publicId
+    }
     
 }
